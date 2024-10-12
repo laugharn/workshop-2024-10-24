@@ -46,7 +46,7 @@ function generateRandomMetrics() {
 
 export default function DashboardPage() {
   const cookieStore = cookies()
-  const authCookie = cookieStore.get('workshop_auth')
+  const authCookie = cookieStore.get('workshop_auth')?.value
 
   if (!authCookie) {
     redirect('/login?returnTo=/dashboard')
