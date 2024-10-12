@@ -1,31 +1,16 @@
-import { Metadata } from 'next'
-import Article from '@/components/article'
-import { NavContent } from '@/components/nav'
-import type { Post } from '@/sanity/types'
 import Posts from '@/components/posts'
 import { sanityClient } from '@/lib/sanity'
-
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'The Best Workshop Content in the World - Workshop',
-  }
-}
-
-async function getPosts() {
-  const posts = await sanityClient.fetch<Post[]>(`*[_type == "post"]`)
-  return posts
-}
+import type { Post } from '@/sanity/types'
 
 export default async function Page() {
-  const posts = await getPosts()
+  const posts = await sanityClient.fetch<Post[]>(`*[_type == "post"] | order(_createdAt desc)`)
 
   return (
-    <>
-      <NavContent />
-      <Article>
-        <h1>The Best Workshop Content in the World</h1>
-        <Posts posts={posts} />
-      </Article>
-    </>
+    <article className="grid w-full grid-cols-1 gap-5">
+      <header>
+        <h1>Welcome to the Workshop</h1>
+      </header>
+      <Posts posts={posts} />
+    </article>
   )
 }
