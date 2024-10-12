@@ -1,30 +1,26 @@
+import { Metadata } from 'next'
 import Article from '@/components/article'
-import Head from 'next/head'
 import { NavContent } from '@/components/nav'
 import type { Post } from '@/sanity/types'
 import Posts from '@/components/posts'
 import { sanityClient } from '@/lib/sanity'
 
-interface Props {
-  posts: Post[]
-}
-
-export async function getStaticProps() {
-  const posts = await sanityClient.fetch<Post[]>(`*[_type == "post"]`)
-
+export async function generateMetadata(): Promise<Metadata> {
   return {
-    props: {
-      posts,
-    },
+    title: 'The Best Workshop Content in the World - Workshop',
   }
 }
 
-function Page({ posts }: Props): JSX.Element {
+async function getPosts() {
+  const posts = await sanityClient.fetch<Post[]>(`*[_type == "post"]`)
+  return posts
+}
+
+export default async function Page() {
+  const posts = await getPosts()
+
   return (
     <>
-      <Head>
-        <title>The Best Workshop Content in the World - Workshop</title>
-      </Head>
       <NavContent />
       <Article>
         <h1>The Best Workshop Content in the World</h1>
@@ -33,5 +29,3 @@ function Page({ posts }: Props): JSX.Element {
     </>
   )
 }
-
-export default Page
