@@ -13,9 +13,11 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await sanityClient.fetch<TypedPost>(`*[_type == "post" && slug.current == $slug]{...,tags[]->}[0]`, {
-    slug: params.slug,
-  })
+  const post = await sanityClient.fetch<TypedPost>(
+    `*[_type == "post" && slug.current == $slug]{...,tags[]->}[0]`,
+    { slug: params.slug },
+    { next: { revalidate: Infinity, tags: [`post-${params.slug}`] } }
+  )
 
   if (!post) {
     return {
@@ -29,9 +31,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Page({ params }: Props): Promise<JSX.Element> {
-  const post = await sanityClient.fetch<TypedPost>(`*[_type == "post" && slug.current == $slug]{...,tags[]->}[0]`, {
-    slug: params.slug,
-  })
+  const post = await sanityClient.fetch<TypedPost>(
+    `*[_type == "post" && slug.current == $slug]{...,tags[]->}[0]`,
+    { slug: params.slug },
+    { next: { revalidate: Infinity, tags: [`post-${params.slug}`] } }
+  )
 
   if (!post) {
     return <div>Post not found</div>
@@ -61,3 +65,4 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
     </Article>
   )
 }
+
