@@ -1,10 +1,13 @@
+'use client';
+
 import { useEffect, useState } from 'react'
 import Link from './link'
 import { parseCookies } from 'nookies'
-import { useRouter } from 'next/router'
+import { useRouter, usePathname } from 'next/navigation'
 
 function Auth() {
-  const { asPath, push } = useRouter()
+  const router = useRouter()
+  const pathname = usePathname()
 
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>()
 
@@ -12,7 +15,7 @@ function Auth() {
     const cookies = parseCookies()
 
     setIsAuthenticated(!!cookies.workshop_auth)
-  }, [asPath])
+  }, [pathname])
 
   if (isAuthenticated) {
     return (
@@ -23,8 +26,8 @@ function Auth() {
             await res.json()
             setIsAuthenticated(false)
 
-            if (asPath === '/dashboard') {
-              push('/login')
+            if (pathname === '/dashboard') {
+              router.push('/login')
             }
           })
         }}
