@@ -5,6 +5,7 @@ import Link from '@/components/link'
 import { PortableText } from '@portabletext/react'
 import { sanityClient } from '@/lib/sanity'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 type TypedPost = Omit<Post, 'tags'> & { tags: Tag[] }
 
@@ -38,7 +39,7 @@ export default async function Page({ params }: Props): Promise<JSX.Element> {
   )
 
   if (!post) {
-    return <div>Post not found</div>
+    notFound()
   }
 
   return (

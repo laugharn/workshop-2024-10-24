@@ -2,6 +2,7 @@ import type { Post, Tag } from '@/sanity/types'
 import Posts from '@/components/posts'
 import { sanityClient } from '@/lib/sanity'
 import { Metadata } from 'next'
+import { notFound } from 'next/navigation'
 
 type TypedTag = Tag & { posts: Post[] }
 
@@ -35,7 +36,7 @@ export default async function Page({ params }: Props) {
   )
 
   if (!tag) {
-    return <div>Tag not found</div>
+    notFound()
   }
 
   return (
