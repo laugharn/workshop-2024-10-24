@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { login } from '@/lib/auth';
 
 export default function FormLogin() {
   const router = useRouter();
@@ -8,10 +9,9 @@ export default function FormLogin() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const res = await fetch('/api/login');
-    const data = await res.json();
+    const result = await login();
 
-    if (data.isAuthenticated === true) {
+    if (result.isAuthenticated === true) {
       const url = new URL(window.location.href);
       router.push(url.searchParams.get('returnTo') ?? '/');
     }
@@ -27,3 +27,4 @@ export default function FormLogin() {
     </form>
   );
 }
+
