@@ -10,8 +10,6 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function generateRandomMetrics() {
-  unstable_noStore()
-
   const metricTitles = [
     'Page Views',
     'Unique Visitors',
@@ -48,6 +46,8 @@ function generateRandomMetrics() {
 }
 
 export default function DashboardPage() {
+  unstable_noStore()
+
   const cookieStore = cookies()
   const authCookie = cookieStore.get('workshop_auth')?.value
 
