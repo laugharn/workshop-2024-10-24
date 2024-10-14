@@ -1,7 +1,6 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Metadata } from 'next'
-import { unstable_noStore } from 'next/cache'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -45,9 +44,9 @@ function generateRandomMetrics() {
   return metrics
 }
 
-export default function DashboardPage() {
-  unstable_noStore()
+export const dynamic = 'force-dynamic'
 
+export default function DashboardPage() {
   const cookieStore = cookies()
   const authCookie = cookieStore.get('workshop_auth')?.value
 
