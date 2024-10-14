@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { Metadata } from 'next'
+import { unstable_noStore } from 'next/cache'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -9,6 +10,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 function generateRandomMetrics() {
+  unstable_noStore()
+
   const metricTitles = [
     'Page Views',
     'Unique Visitors',
