@@ -6,7 +6,7 @@ export default async function Page() {
   const posts = await sanityClient.fetch<Post[]>(
     `*[_type == "post"] | order(_createdAt desc)`,
     {},
-    { next: { revalidate: Infinity } },
+    { cache: 'force-cache', next: { tags: ['posts'] } },
   )
 
   return (
