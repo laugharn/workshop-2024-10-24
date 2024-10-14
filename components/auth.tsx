@@ -1,32 +1,39 @@
+'use client';
+
 import { useEffect, useState } from 'react'
 import Link from './link'
-import { parseCookies } from 'nookies'
-import { useRouter } from 'next/router'
+import { useRouter, usePathname } from 'next/navigation'
+import { logout, checkAuth } from '@/lib/auth'
 
 function Auth() {
-  const { asPath, push } = useRouter()
+  const router = useRouter()
+  const pathname = usePathname()
 
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>()
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
 
   useEffect(() => {
-    const cookies = parseCookies()
+    async function checkAuthStatus() {
+      const { isAuthenticated } = await checkAuth()
+      setIsAuthenticated(isAuthenticated)
+    }
+    checkAuthStatus()
+  }, [pathname])
 
-    setIsAuthenticated(!!cookies.workshop_auth)
-  }, [asPath])
+  if (isAuthenticated === null) {
+    return null // Loading state
+  }
 
   if (isAuthenticated) {
     return (
       <button
         className="text-[rgb(0,87,255)] hover:text-[blue]"
-        onClick={() => {
-          fetch('/api/logout').then(async (res) => {
-            await res.json()
-            setIsAuthenticated(false)
+        onClick={async () => {
+          const result = await logout()
+          setIsAuthenticated(result.isAuthenticated)
 
-            if (asPath === '/dashboard') {
-              push('/login')
-            }
-          })
+          if (pathname === '/dashboard') {
+            router.push('/login')
+          }
         }}
       >
         Logout.
@@ -34,15 +41,12 @@ function Auth() {
     )
   }
 
-  if (isAuthenticated === false) {
-    return (
-      <Link href="/login" prefetch={false}>
-        Login.
-      </Link>
-    )
-  }
-
-  return null
+  return (
+    <Link href="/login" prefetch={false}>
+      Login.
+    </Link>
+  )
 }
 
 export default Auth
+
