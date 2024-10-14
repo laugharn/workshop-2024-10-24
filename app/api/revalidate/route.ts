@@ -28,7 +28,11 @@ export async function GET(request: NextRequest) {
   } catch (err) {
     // If there was an error, Next.js will continue
     // to show the last successfully generated page
-    return NextResponse.json({ message: 'Error revalidating' }, { status: 500 })
+    console.error('Error during revalidation:', err)
+    return NextResponse.json({ 
+      message: 'Error revalidating',
+      error: err instanceof Error ? err.message : String(err)
+    }, { status: 500 })
   }
 }
 
