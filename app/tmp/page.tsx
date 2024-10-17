@@ -1,4 +1,8 @@
+import { unstable_noStore } from 'next/cache'
+
 async function generateRandomMetrics() {
+  unstable_noStore()
+
   const metricTitles = [
     'Page Views',
     'Unique Visitors',
