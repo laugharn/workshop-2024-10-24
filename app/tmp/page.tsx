@@ -1,8 +1,4 @@
-import { unstable_noStore } from 'next/cache'
-
 async function generateRandomMetrics() {
-  unstable_noStore()
-
   const metricTitles = [
     'Page Views',
     'Unique Visitors',
@@ -43,5 +39,7 @@ async function Page() {
 
   return <div>{JSON.stringify(metrics, null, 2)}</div>
 }
+
+export const dynamic = 'force-dynamic'
 
 export default Page
