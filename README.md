@@ -1,4 +1,4 @@
-## Workshop 2024-10-24 First Draft
+## Workshop
 
 1. `pnpm install`
 2. .env.exampe -> .env and set values

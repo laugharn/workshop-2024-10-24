@@ -3,7 +3,6 @@ import Article from '@/components/article'
 import { format } from 'date-fns'
 import { type GetStaticPaths } from 'next'
 import Head from 'next/head'
-import Link from '@/components/link'
 import { NavContent } from '@/components/nav'
 import { PortableText } from '@portabletext/react'
 import { sanityClient } from '@/lib/sanity'
@@ -64,9 +63,7 @@ function Page({ post }: Props): JSX.Element {
           <span>
             Tagged:{' '}
             {post.tags.map((tag) => (
-              <Link key={tag._id} href={`/tags/${tag.slug!.current}`}>
-                {tag.title}
-              </Link>
+              <span key={tag.title}>{tag.title}</span>
             ))}
           </span>
         </p>
